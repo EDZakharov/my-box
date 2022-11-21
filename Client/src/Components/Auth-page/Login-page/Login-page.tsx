@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './Login-page.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
@@ -8,6 +8,18 @@ export const LoginPage: React.FC = () => {
   const [inpValue1, setInpValue1] = useState<string>('')
   const [inpValue2, setInpValue2] = useState<string>('')
   const [on, off] = useState<boolean>(false)
+  const [users, setUser] = useState({})
+
+  const URL = 'http://localhost:7000/user/one'
+
+  const regUser = async (login: string, password: string) => {
+    const data = await fetch(URL, {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify({ login, password }),
+    })
+    return data
+  }
 
   return (
     <div className={style.LoginPage__wrapper}>
@@ -23,7 +35,7 @@ export const LoginPage: React.FC = () => {
         >
           <div className={style.LoginPage__main__wrapper__input}>
             <input
-              type="email"
+              type="text"
               className={style.LoginPage__main__input}
               placeholder="E-mail"
               // required={true}
@@ -74,7 +86,15 @@ export const LoginPage: React.FC = () => {
             </Link>
           </div>
           <div className={style.LoginPage__main__wrapper__button}>
-            <button type="submit" className={style.LoginPage__main__button}>
+            <button
+              type="submit"
+              className={style.LoginPage__main__button}
+              onClick={() => {
+                regUser(inpValue1, inpValue2).then((data) => {
+                  console.log('Data: ', data)
+                })
+              }}
+            >
               login
             </button>
           </div>
