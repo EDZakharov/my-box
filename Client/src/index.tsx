@@ -7,50 +7,85 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import { ErrorPage } from './Components/Error-page/Error-page'
 import { RegisterPage } from './Components/Auth-page/Register-page/Register-page'
 import { Preloader } from './Components/Preloader/Preloader'
-import { checkAuth } from './Auth/CheckAuth'
+import { Provider, useSelector } from 'react-redux'
+import { store } from './redux/store'
 
 const LoginPage = lazy(async () => ({
   default: (await import('./Components/Auth-page/Login-page/Login-page'))
     .LoginPage,
 }))
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: checkAuth() ? (
-      <App />
-    ) : (
+const WithAppAuth = () => {
+  const user = useSelector((state: any) => state.UserSlice)
+  console.log('WithAppAuth', user)
+  if (!user.login || !user.email || !user.password) {
+    return (
       <Suspense fallback={<Preloader />}>
         <Navigate to="/login" />
       </Suspense>
-    ),
+    )
+  } else {
+    return <App />
+  }
+}
+
+const WithLoginAuth = () => {
+  const user = useSelector((state: any) => state.UserSlice)
+  console.log('WithLoginAuth', user)
+  if (!user.login || !user.email || !user.password) {
+    return (
+      <Suspense fallback={<Preloader />}>
+        <LoginPage />
+      </Suspense>
+    )
+  } else {
+    return (
+      <Suspense fallback={<Preloader />}>
+        <Navigate to="/" />
+      </Suspense>
+    )
+  }
+}
+
+const WithRegistrationAuth = () => {
+  const user = useSelector((state: any) => state.UserSlice)
+  console.log('WithRegistrationAuth', user)
+  if (!user.login || !user.email || !user.password) {
+    return (
+      <Suspense fallback={<Preloader />}>
+        <RegisterPage />
+      </Suspense>
+    )
+  } else {
+    return (
+      <Suspense fallback={<Preloader />}>
+        <Navigate to="/" />
+      </Suspense>
+    )
+  }
+}
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <WithAppAuth />,
     errorElement: <ErrorPage />,
   },
   {
     path: '/login',
-    element: checkAuth() ? (
-      <Suspense fallback={<Preloader />}>
-        <Navigate to="/" />
-      </Suspense>
-    ) : (
-      <Suspense fallback={<Preloader />}>
-        <LoginPage />
-      </Suspense>
-    ),
+    element: <WithLoginAuth />,
   },
   {
     path: '/registration',
-    element: checkAuth() ? (
-      <Suspense fallback={<Preloader />}>
-        <Navigate to="/" />
-      </Suspense>
-    ) : (
-      <RegisterPage />
-    ),
+    element: <WithRegistrationAuth />,
   },
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(<RouterProvider router={router} />)
+root.render(
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
+)
 
 reportWebVitals()

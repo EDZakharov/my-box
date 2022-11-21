@@ -14,10 +14,10 @@ class UserService {
       return candidate
     }
   }
-  async findOne(login) {
-    const candidate = await UserModel.findOne({ login })
+  async findOne(login, password) {
+    const candidate = await UserModel.findOne({ login, password })
     if (!candidate) {
-      throw new Error('Not Found')
+      return { message: 'Wrong login or password' }
     } else {
       return candidate
     }

@@ -9,12 +9,16 @@ class UserController {
       next(e)
     }
   }
-  async getUser(req, res, next) {
-    console.log('body', req.body)
-    const { login } = req.body
+  async login(req, res, next) {
+    const { login, password } = req.body
     try {
-      const user = await UserServices.findOne(login)
-      res.status(200).json(user)
+      const user = await UserServices.findOne(login, password)
+      if (user.message) {
+        res.status(409).json(user)
+      } else {
+        console.log('', user)
+        res.status(200).json(user)
+      }
     } catch (e) {
       next(e)
     }

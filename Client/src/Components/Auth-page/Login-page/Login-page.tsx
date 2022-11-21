@@ -2,24 +2,21 @@ import React, { useEffect, useState } from 'react'
 import style from './Login-page.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useLoginMutation } from '../../../redux/api'
 
 export const LoginPage: React.FC = () => {
-  const [inpValue1, setInpValue1] = useState<string>('')
-  const [inpValue2, setInpValue2] = useState<string>('')
+  const [login, setLogin] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
   const [on, off] = useState<boolean>(false)
-  const [users, setUser] = useState({})
+  const [setBody, { isSuccess }] = useLoginMutation()
+  const navigate = useNavigate()
 
-  const URL = 'http://localhost:7000/user/one'
-
-  const regUser = async (login: string, password: string) => {
-    const data = await fetch(URL, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-      body: JSON.stringify({ login, password }),
-    })
-    return data
-  }
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/')
+    }
+  }, [isSuccess])
 
   return (
     <div className={style.LoginPage__wrapper}>
@@ -31,6 +28,9 @@ export const LoginPage: React.FC = () => {
           className={style.LoginPage__main}
           onSubmit={async (e) => {
             e.preventDefault()
+            setBody({ login, password })
+            setLogin('')
+            setPassword('')
           }}
         >
           <div className={style.LoginPage__main__wrapper__input}>
@@ -39,12 +39,12 @@ export const LoginPage: React.FC = () => {
               className={style.LoginPage__main__input}
               placeholder="E-mail"
               // required={true}
-              value={inpValue1}
+              value={login}
               onChange={(e): void => {
-                setInpValue1(e.target.value)
+                setLogin(e.target.value)
               }}
               style={
-                inpValue1.length !== 0
+                login.length !== 0
                   ? { borderBottom: '1px solid #08c' }
                   : { borderBottom: '1px solid rgba(150, 150, 150, 0.438)' }
               }
@@ -55,12 +55,12 @@ export const LoginPage: React.FC = () => {
               type={!on ? 'password' : 'text'}
               className={style.LoginPage__main__input}
               placeholder="Password"
-              value={inpValue2}
+              value={password}
               onChange={(e): void => {
-                setInpValue2(e.target.value)
+                setPassword(e.target.value)
               }}
               style={
-                inpValue2.length !== 0
+                password.length !== 0
                   ? { borderBottom: '1px solid #08c' }
                   : { borderBottom: '1px solid rgba(150, 150, 150, 0.438)' }
               }
@@ -86,15 +86,7 @@ export const LoginPage: React.FC = () => {
             </Link>
           </div>
           <div className={style.LoginPage__main__wrapper__button}>
-            <button
-              type="submit"
-              className={style.LoginPage__main__button}
-              onClick={() => {
-                regUser(inpValue1, inpValue2).then((data) => {
-                  console.log('Data: ', data)
-                })
-              }}
-            >
+            <button type="submit" className={style.LoginPage__main__button}>
               login
             </button>
           </div>
