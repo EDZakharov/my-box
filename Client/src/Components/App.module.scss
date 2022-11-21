@@ -1,0 +1,18 @@
+.app__wrapper {
+  color: white;
+  .app {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    .app__header {
+      background-color: transparent;
+    }
+    .app__main {
+      background-color: transparent;
+    }
+    .app__footer {
+      background-color: transparent;
+    }
+  }
+}
