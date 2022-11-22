@@ -1,17 +1,17 @@
-.app__wrapper {
+.root__wrapper {
   color: white;
-  .app {
+  .root {
     width: 100vw;
     height: 100vh;
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
-    .app__header {
+    .root__header {
       background-color: transparent;
     }
-    .app__main {
+    .root__main {
       background-color: transparent;
     }
-    .app__footer {
+    .root__footer {
       background-color: transparent;
     }
   }

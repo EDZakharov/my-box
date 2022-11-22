@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouteError, useLocation } from 'react-router-dom'
+import { useRouteError, useLocation, Link } from 'react-router-dom'
 import style from './Error-page.module.scss'
 
 export const ErrorPage: React.FC = () => {
@@ -13,6 +13,7 @@ export const ErrorPage: React.FC = () => {
         <h1>Error 404</h1>
         <p>Page {location.pathname}</p>
         <h2>not Found</h2>
+        <Link to={'/'}>Return</Link>
       </div>
     </div>
   )

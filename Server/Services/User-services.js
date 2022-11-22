@@ -1,9 +1,7 @@
 const UserModel = require('../Models/User-model')
-// const TokenModel = require('../models/token-model')
-// const tokenService = require('../service/token-service')
-// const userDTO = require('../dtos/user-dtos')
-// const bcrypt = require('bcrypt')
-// const ErrorHandler = require('../exeptions/errorHandler')
+const TokenModel = require('../Models/Token-model')
+const TokenService = require('../Services/Token-services')
+const bcrypt = require('bcrypt')
 
 class UserService {
   async findAll() {
@@ -14,14 +12,22 @@ class UserService {
       return candidate
     }
   }
-  async findOne(login, password) {
-    const candidate = await UserModel.findOne({ login, password })
+
+  async login(login, password) {
+    const candidate = await UserModel.findOne({ login })
     if (!candidate) {
-      return { message: 'Wrong login or password' }
-    } else {
-      return candidate
+      return { message: 'Wrong login' }
     }
+    const comparePass = bcrypt.compareSync(password, candidate.password)
+    if (!comparePass) {
+      return { message: 'Wrong password' }
+    }
+    const tokens = TokenService.generateTokens({ ...candidate })
+    await TokenService.saveToken(candidate._id, tokens.refreshToken)
+
+    return [tokens, candidate]
   }
+
   async delOne(login, password) {
     const candidate = await UserModel.findOne({ login })
     if (!candidate) {
@@ -32,7 +38,8 @@ class UserService {
     }
     return UserModel.find()
   }
-  async regUser(email, login, password) {
+
+  async registration(email, login, password) {
     const findDuplicateEmail = await UserModel.findOne({ email })
     const findDuplicateLogin = await UserModel.findOne({ login })
     if (findDuplicateEmail) {
@@ -41,13 +48,35 @@ class UserService {
     if (findDuplicateLogin) {
       return { message: 'Login already exists' }
     }
+    const hashPassword = await bcrypt.hash(password, 3)
     const candidate = await UserModel.create({
       email,
       login,
-      password,
+      password: hashPassword,
     })
     candidate.save()
-    return UserModel.findOne({ email })
+    const tokens = TokenService.generateTokens({ ...candidate })
+    await TokenService.saveToken(candidate._id, tokens.refreshToken)
+
+    return [tokens, candidate]
+  }
+
+  async refresh(refreshToken) {
+    if (!refreshToken) {
+      return { message: 'wrong token' }
+    }
+    const userData = await TokenService.validateRefreshToken(refreshToken)
+    const tokenFromDB = await TokenService.findToken(refreshToken)
+    console.log('', userData)
+    if (!userData || !tokenFromDB) {
+      return { message: 'wrong token' }
+    }
+    const candidate = await UserModel.findOne({ id: userData.id })
+
+    const tokens = TokenService.generateTokens({ ...candidate })
+    await TokenService.saveToken(candidate._id, tokens.refreshToken)
+
+    return [tokens, candidate]
   }
 }
 

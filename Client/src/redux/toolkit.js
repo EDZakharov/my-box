@@ -6,14 +6,18 @@ const UserSlice = createSlice({
     email: null,
     login: null,
     password: null,
+    accessToken: null,
   },
   reducers: {
-    login: (state, action) => {
-      state = { ...action.payload }
+    setUser: (state, action) => {
+      state = action.payload
+    },
+    setToken: (state, action) => {
+      state.accessToken = action.payload
     },
   },
 })
 
 export default UserSlice
 
-export const { login } = UserSlice.actions
+export const { setUser, setToken } = UserSlice.actions

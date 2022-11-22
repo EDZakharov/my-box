@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import style from './Login-page.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useLoginMutation } from '../../../redux/api'
 
 export const LoginPage: React.FC = () => {
   const [login, setLogin] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [on, off] = useState<boolean>(false)
-  const [setBody, { isSuccess }] = useLoginMutation()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate('/')
-    }
-  }, [isSuccess])
+  const [setBody] = useLoginMutation()
 
   return (
     <div className={style.LoginPage__wrapper}>

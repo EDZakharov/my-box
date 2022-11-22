@@ -3,40 +3,64 @@ import {
   fetchBaseQuery,
   retry,
 } from '@reduxjs/toolkit/dist/query/react'
-import { login } from './toolkit'
-import { useNavigate } from 'react-router-dom'
+import { setUser, setToken } from './toolkit'
+// import { useNavigate } from 'react-router-dom'
 
 export const staggeredBaseQuery = retry(
   fetchBaseQuery({
     baseUrl: 'http://localhost:7000/user/',
     credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().accessToken
+      headers.set('Authorization', `Bearer ${token ? token : ''}`)
+      return headers
+    },
   }),
   {
-    maxRetries: 2,
+    maxRetries: 0.5,
   }
 )
 
 //REAUTH
-const baseQueryWithReauth = async (args, api, extraOptions) => {
+const baseQueryWithReAuth = async (args, api, extraOptions) => {
   let result = await staggeredBaseQuery(args, api, extraOptions)
+
   if (result.data && !result.error) {
-    api.dispatch(
-      login({
-        email: result.data.email,
-        login: result.data.login,
-        password: result.data.password,
-      })
-    )
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+    if (api.endpoint === 'login') {
+      api.dispatch(
+        setUser({
+          email: result.data[1].email,
+          login: result.data[1].login,
+          password: result.data[1].password,
+        })
+      )
+      api.dispatch(setToken(result.data[0].accessToken))
+      return result
+    }
+    if (api.endpoint === 'refresh') {
+      if (result.data.length === 2) {
+        api.dispatch(
+          setUser({
+            email: result.data[1].email,
+            login: result.data[1].login,
+            password: result.data[1].password,
+          })
+        )
+        api.dispatch(setToken(result.data[0].accessToken))
+
+        return result
+      }
+    }
+  } else {
+    return result
   }
-  return result
 }
 
 //CREATE_API
 export const api = createApi({
   reducerPath: 'user',
   tagTypes: ['user__data'],
-  baseQuery: baseQueryWithReauth,
+  baseQuery: baseQueryWithReAuth,
   endpoints: (builder) => ({}),
 })
 
@@ -53,7 +77,7 @@ const retRes = (result) => {
 }
 
 //WORKSPACE
-const workspace = api.injectEndpoints({
+export const workspace = api.injectEndpoints({
   endpoints: (build) => ({
     //AUTH
     login: build.mutation({
@@ -65,7 +89,15 @@ const workspace = api.injectEndpoints({
       invalidatesTags: ['user__data'],
       providesTags: retRes,
     }),
+    refresh: build.query({
+      query: () => ({
+        url: 'refresh',
+        method: 'GET',
+      }),
+      invalidatesTags: ['user__data'],
+      providesTags: retRes,
+    }),
   }),
 })
 
-export const { useLoginMutation } = workspace
+export const { useLoginMutation, useRefreshQuery } = workspace
