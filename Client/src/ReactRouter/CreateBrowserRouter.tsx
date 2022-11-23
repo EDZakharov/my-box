@@ -6,6 +6,7 @@ import { RegisterPage } from '../Components/Auth-page/Register-page/Register-pag
 import { ErrorPage } from '../Components/Error-page/Error-page'
 import { Preloader } from '../Components/Preloader/Preloader'
 import { Suspense } from 'react'
+import { Dashboard } from '../Components/Dashboard/Dashboard'
 
 export const router = createBrowserRouter([
   {
@@ -20,21 +21,11 @@ export const router = createBrowserRouter([
         <ErrorPage />
       </Suspense>
     ),
-    loader: Auth.root,
+    // loader: Auth,
     children: [
       {
         path: '/',
-        element: (
-          <Link
-            to={'/client'}
-            style={{
-              // textDecoration: 'none',
-              color: 'white',
-            }}
-          >
-            <h1>Welcome</h1>
-          </Link>
-        ),
+        element: <Dashboard />,
       },
     ],
   },

@@ -1,18 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
+import { setAccessToken } from '../redux/toolkit'
 import { LoginPage } from './Auth-page/Login-page/Login-page'
-import style from './Root.module.scss'
-import { useSelector } from 'react-redux'
+// import { Auth } from '../Auth/Auth'
 
 export const Root: React.FC = () => {
-  const data = useSelector((state: any) => state.UserSlice.accessToken)
+  const stateToken = useSelector((state: any) => state.UserSlice.accessToken)
+  const auth = useSelector((state: any) => state.UserSlice.auth)
+  const localToken = localStorage.getItem('accessToken')
+  const dispatch = useDispatch()
 
-  if (data) {
-    return (
-      <div className={style.root__wrapper}>
-        <Outlet />
-      </div>
-    )
+  useEffect(() => {
+    if (!stateToken && localToken) {
+      dispatch(setAccessToken(localToken))
+    }
+  }, [auth, dispatch, localToken, stateToken])
+
+  if (auth) {
+    return <Outlet />
   } else {
     return <LoginPage />
   }

@@ -3,7 +3,7 @@ import style from './Login-page.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
-import { useLoginMutation } from '../../../redux/api'
+import { useLoginMutation } from '../../../redux/Endpoints/User-endpoints'
 
 export const LoginPage: React.FC = () => {
   const [login, setLogin] = useState<string>('')
