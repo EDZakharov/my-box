@@ -1,25 +1,30 @@
-import React, { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
+import { useAuthQuery } from '../redux/Endpoints/Auth-endpoints'
 import { setAccessToken } from '../redux/toolkit'
 import { LoginPage } from './Auth-page/Login-page/Login-page'
-// import { Auth } from '../Auth/Auth'
 
-export const Root: React.FC = () => {
+export const Root = (): JSX.Element => {
   const stateToken = useSelector((state: any) => state.UserSlice.accessToken)
   const auth = useSelector((state: any) => state.UserSlice.auth)
   const localToken = localStorage.getItem('accessToken')
   const dispatch = useDispatch()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!stateToken && localToken) {
       dispatch(setAccessToken(localToken))
     }
   }, [auth, dispatch, localToken, stateToken])
 
   if (auth) {
-    return <Outlet />
+    return <AuthOutlet />
   } else {
     return <LoginPage />
   }
+}
+
+const AuthOutlet = () => {
+  useAuthQuery({})
+  return <Outlet />
 }

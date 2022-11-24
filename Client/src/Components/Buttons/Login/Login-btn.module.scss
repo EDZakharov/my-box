@@ -1,0 +1,56 @@
+.login__button__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @keyframes show {
+    from {
+      opacity: 0;
+      transform: translateY(-80%);
+    }
+    70% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  .login__button {
+    transition: 0.3s all;
+    padding: 10px;
+    width: 150px;
+    height: 55px;
+    border-radius: 2rem;
+    border: none;
+    user-select: none;
+    background-color: #08c;
+    text-transform: uppercase;
+    font-size: 18px;
+    color: white;
+    letter-spacing: 0.8px;
+    font-weight: 500;
+
+    &:hover {
+      background-color: #019be9;
+      cursor: pointer;
+    }
+  }
+  .error {
+    opacity: 0;
+    width: 150px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(161, 42, 42, 0.63);
+    position: absolute;
+    top: 20px;
+    animation: show;
+    animation-duration: 1.3s;
+    animation-iteration-count: 1;
+    color: rgb(255, 255, 255);
+    border-radius: 20px;
+  }
+}

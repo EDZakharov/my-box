@@ -3,13 +3,12 @@ import style from './Login-page.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
-import { useLoginMutation } from '../../../redux/Endpoints/User-endpoints'
+import { LoginButton } from '../../Buttons/Login/Login-btn'
 
 export const LoginPage: React.FC = () => {
   const [login, setLogin] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [on, off] = useState<boolean>(false)
-  const [setBody] = useLoginMutation()
 
   return (
     <div className={style.LoginPage__wrapper}>
@@ -19,18 +18,15 @@ export const LoginPage: React.FC = () => {
         </div>
         <form
           className={style.LoginPage__main}
-          onSubmit={async (e) => {
+          onSubmit={(e) => {
             e.preventDefault()
-            setBody({ login, password })
-            setLogin('')
-            setPassword('')
           }}
         >
           <div className={style.LoginPage__main__wrapper__input}>
             <input
               type="text"
               className={style.LoginPage__main__input}
-              placeholder="E-mail"
+              placeholder="Login"
               // required={true}
               value={login}
               onChange={(e): void => {
@@ -78,11 +74,7 @@ export const LoginPage: React.FC = () => {
               Forgot password?
             </Link>
           </div>
-          <div className={style.LoginPage__main__wrapper__button}>
-            <button type="submit" className={style.LoginPage__main__button}>
-              login
-            </button>
-          </div>
+          <LoginButton login={login} password={password} />
         </form>
         <div className={style.LoginPage__footer}>
           <div className={style.LoginPage__footer__register}>

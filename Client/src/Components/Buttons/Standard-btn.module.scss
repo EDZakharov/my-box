@@ -1,0 +1,17 @@
+.standard__button {
+  transition: 0.3s all;
+  padding: 10px;
+  border-radius: 2rem;
+  border: none;
+  user-select: none;
+  background-color: #08c;
+  text-transform: uppercase;
+  color: white;
+  letter-spacing: 0.8px;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #019be9;
+    cursor: pointer;
+  }
+}

@@ -29,7 +29,7 @@ export const staggeredBaseQuery = retry(
 export const baseQueryWithReAuth = async (args, api, extraOptions) => {
   await mutex.waitForUnlock()
   let result = await staggeredBaseQuery(args, api, extraOptions)
-  console.log('Result: ', result)
+  console.log('Server-response: ', result)
   if (result.error && result.error.status === 409) {
     api.dispatch(logout())
   }

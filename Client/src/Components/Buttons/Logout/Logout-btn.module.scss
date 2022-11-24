@@ -1,0 +1,22 @@
+.logout__wrapper {
+  .logout__button {
+    transition: 0.3s all;
+    padding: 10px;
+    width: 150px;
+    height: 55px;
+    border-radius: 2rem;
+    border: none;
+    user-select: none;
+    background-color: #08c;
+    text-transform: uppercase;
+    font-size: 18px;
+    color: white;
+    letter-spacing: 0.8px;
+    font-weight: 500;
+
+    &:hover {
+      background-color: #019be9;
+      cursor: pointer;
+    }
+  }
+}
