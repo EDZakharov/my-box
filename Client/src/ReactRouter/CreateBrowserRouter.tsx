@@ -4,7 +4,7 @@ import { RegisterPage } from '../Components/Auth-page/Register-page/Register-pag
 import { ErrorPage } from '../Components/Error-page/Error-page'
 import { Preloader } from '../Components/Preloader/Preloader'
 import { Suspense } from 'react'
-import { Dashboard } from '../Components/Dashboard/Dashboard'
+import { App } from '../Components/App/App'
 
 export const router = createBrowserRouter([
   {
@@ -23,7 +23,15 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Dashboard />,
+        element: <App />,
+      },
+      {
+        path: '/Client',
+        element: (
+          <div>
+            <Link to={'/'}>Back</Link>
+          </div>
+        ),
       },
     ],
   },

@@ -20,7 +20,24 @@ const workspace = api.injectEndpoints({
         }
       },
     }),
+    logout: build.mutation({
+      query: ({}) => ({
+        url: 'logout',
+        method: 'POST',
+      }),
+      invalidatesTags: ['auth'],
+      providesTags: (result) => {
+        if (result) {
+          return [
+            ...result.map(({ id }) => ({ type: 'auth', id })),
+            { type: 'auth', id: 'LIST' },
+          ]
+        } else {
+          return [{ type: 'auth', id: 'LIST' }]
+        }
+      },
+    }),
   }),
 })
 
-export const { useLoginMutation } = workspace
+export const { useLoginMutation, useLogoutMutation } = workspace
