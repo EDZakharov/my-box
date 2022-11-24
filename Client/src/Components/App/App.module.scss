@@ -1,0 +1,7 @@
+.app__wrapper {
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  overflow-y: hidden;
+  grid-template-areas: 'h h', 'dm ma', 'dm ma';
+}
