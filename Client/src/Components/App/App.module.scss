@@ -1,7 +1,27 @@
 .app__wrapper {
+  background-color: transparent;
+  // height: 100vh;
   width: 100vw;
   height: 100vh;
-  background-color: transparent;
-  overflow-y: hidden;
-  grid-template-areas: 'h h', 'dm ma', 'dm ma';
+  display: grid;
+  grid-template-areas: 'h ' 'ma' 'f';
+  grid-template-rows: 100px auto 100px;
+  // grid-template-columns: 200px auto;
+  // justify-items: stretch;
+  // grid-auto-flow: dense;
+
+  .app__header {
+    grid-area: h;
+    background-color: #fff;
+  }
+
+  .app__main {
+    grid-area: ma;
+    background-color: rgb(94, 51, 51);
+  }
+
+  .app__footer {
+    grid-area: f;
+    background-color: #fff;
+  }
 }

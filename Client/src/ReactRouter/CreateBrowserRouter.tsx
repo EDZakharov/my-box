@@ -27,6 +27,14 @@ export const router = createBrowserRouter([
         path: '/',
         element: <App />,
       },
+      {
+        path: '/Client',
+        element: (
+          <div>
+            <Link to={'/'}>Back</Link>
+          </div>
+        ),
+      },
     ],
   },
   {
