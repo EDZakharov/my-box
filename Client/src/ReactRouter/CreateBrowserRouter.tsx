@@ -1,7 +1,5 @@
-import { createBrowserRouter, Link } from 'react-router-dom'
-import { Auth } from '../Auth/Auth'
+import { createBrowserRouter } from 'react-router-dom'
 import { Root } from '../Components/Root'
-import { LoginPage } from '../Components/Auth-page/Login-page/Login-page'
 import { RegisterPage } from '../Components/Auth-page/Register-page/Register-page'
 import { ErrorPage } from '../Components/Error-page/Error-page'
 import { Preloader } from '../Components/Preloader/Preloader'
