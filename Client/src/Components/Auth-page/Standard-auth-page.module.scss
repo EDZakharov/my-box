@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
+@keyframes show {
+  from {
+    transform: translateY(-400%);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translateY(10%);
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+.StandardAuthPage__wrapper {
+  font-family: 'Ubuntu', sans-serif;
+  background: linear-gradient(
+    0deg,
+    rgb(46, 46, 53) 0%,
+    rgb(44, 44, 49) 51%,
+    rgba(50, 50, 53, 1) 100%
+  );
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .StandardAuthPage {
+    width: 500px;
+    height: 600px;
+    background-color: #2d2d31;
+    box-shadow: 0 10px 30px 1px #0000005d;
+    display: grid;
+    grid-template-rows: 1fr 3fr 0.5fr;
+    border-radius: 1rem 1rem 0 0;
+    position: relative;
+
+    animation: show;
+    animation-duration: 0.5s;
+
+    .StandardAuthPage__inner__border__bottom {
+      position: absolute;
+      bottom: -10px;
+      height: 10px;
+      width: 100%;
+      background-color: rgb(180, 180, 180);
+      border-radius: 0 0 1rem 1rem;
+    }
+
+    .StandardAuthPage__header {
+      border-radius: 1rem 1rem 0 0;
+      width: 100%;
+      background-color: #27272c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .StandardAuthPage__header__text {
+        font-size: 45px;
+        font-weight: 600;
+        user-select: none;
+        color: rgb(180, 180, 180);
+        text-shadow: 0 5px 10px rgb(19, 19, 19);
+      }
+    }
+    .StandardAuthPage__main {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      position: relative;
+    }
+    .StandardAuthPage__footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 30px;
+      width: 100%;
+
+      .StandardAuthPage__footer__text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: rgba(150, 150, 150, 0.438);
+        user-select: none;
+        a {
+          color: rgb(180, 180, 180);
+          transition: 0.2s all;
+
+          &:hover {
+            color: #019be9;
+          }
+        }
+      }
+    }
+  }
+}
