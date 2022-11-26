@@ -1,11 +1,14 @@
 import React from 'react'
-import style from './Preloader.module.scss'
+import './Preloader.css'
 
 export const Preloader: React.FC = () => {
   return (
-    <div className={style.Preloader}>
+    <div className="preloader">
       <div className="loader">
-        <span>Loading...</span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </div>
   )

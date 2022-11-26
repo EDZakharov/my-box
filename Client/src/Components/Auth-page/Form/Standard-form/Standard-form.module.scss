@@ -1,0 +1,43 @@
+.standardForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  position: relative;
+
+  .standardForm__wrapper__remember {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    height: 40px;
+    color: rgb(180, 180, 180);
+    label {
+      user-select: none;
+      transition: 0.2s all;
+      cursor: pointer;
+      &:hover {
+        color: #019be9;
+      }
+    }
+
+    .standardForm__remember__input {
+      transition: 0.2s all;
+      transform: scale(1.2);
+      cursor: pointer;
+
+      &:checked {
+        transform: scale(1.5);
+      }
+    }
+
+    .standardForm__remember__link {
+      transition: 0.2s all;
+      text-decoration: none;
+      color: rgb(180, 180, 180);
+      user-select: none;
+      &:hover {
+        color: #019be9;
+      }
+    }
+  }
+}

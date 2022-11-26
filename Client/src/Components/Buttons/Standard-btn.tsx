@@ -6,7 +6,7 @@ type props = {
   height: number
   onButtonClick: any
   onButtonClickParams?: {}
-  preventDefaulted: boolean
+  preventDefaulted?: boolean
 }
 
 /** This is a React function component.

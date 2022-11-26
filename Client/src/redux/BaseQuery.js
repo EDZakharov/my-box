@@ -1,5 +1,5 @@
 import { fetchBaseQuery, retry } from '@reduxjs/toolkit/dist/query/react'
-import { setAccessToken, logout, resetAccessToken } from './toolkit'
+import { setAccessToken, logout, resetAccessToken, pending } from './toolkit'
 import { Mutex } from 'async-mutex'
 
 /*
@@ -32,10 +32,12 @@ export const baseQueryWithReAuth = async (args, api, extraOptions) => {
   console.log('Server-response: ', result)
   if (result.error && result.error.status === 409) {
     api.dispatch(logout())
+    api.dispatch(pending(false))
   }
 
   if (!result.error && result.data.accessToken) {
     api.dispatch(setAccessToken(result.data.accessToken))
+    api.dispatch(pending(false))
   }
   if (result.error && result.error.originalStatus === 401) {
     if (!mutex.isLocked()) {
@@ -48,9 +50,11 @@ export const baseQueryWithReAuth = async (args, api, extraOptions) => {
         )
         if (refreshResult.data) {
           api.dispatch(resetAccessToken(refreshResult.data.accessToken))
+          api.dispatch(pending(false))
           result = await staggeredBaseQuery(args, api, extraOptions)
         } else {
           api.dispatch(logout())
+          api.dispatch(pending(false))
         }
       } finally {
         release()

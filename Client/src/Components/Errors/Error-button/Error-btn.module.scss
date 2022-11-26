@@ -1,0 +1,38 @@
+@keyframes show {
+  from {
+    opacity: 0;
+    transform: translateY(-80%);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.error__wrapper {
+  opacity: 0;
+  --setDefWidth: 100%;
+  background-color: rgba(161, 42, 42, 0.63);
+  position: absolute;
+  top: 20px;
+  animation: show;
+  animation-duration: 1.3s;
+  animation-iteration-count: 1;
+  border-radius: 20px;
+
+  .error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 10px;
+    span {
+      color: rgb(180, 180, 180);
+      text-align: center;
+      white-space: break-spaces;
+    }
+  }
+}

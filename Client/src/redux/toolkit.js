@@ -8,6 +8,7 @@ const UserSlice = createSlice({
     password: null,
     accessToken: null,
     auth: false,
+    pending: false,
   },
   reducers: {
     setUser: (state, action) => {
@@ -41,10 +42,20 @@ const UserSlice = createSlice({
       state.accessToken = null
       state.auth = false
     },
+    pending: (state, action) => {
+      state.pending = action.payload
+      console.log('', state.pending)
+    },
   },
 })
 
 export default UserSlice
 
-export const { setUser, setToken, logout, resetAccessToken, setAccessToken } =
-  UserSlice.actions
+export const {
+  setUser,
+  setToken,
+  logout,
+  resetAccessToken,
+  setAccessToken,
+  pending,
+} = UserSlice.actions

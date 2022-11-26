@@ -1,8 +1,7 @@
-import React from 'react'
 import { useRouteError, useLocation, Link } from 'react-router-dom'
-import style from './Error-page.module.scss'
+import style from './ErrorElement.module.scss'
 
-export const ErrorPage: React.FC = () => {
+export const ErrorElement = (): JSX.Element => {
   const error: unknown = useRouteError()
   const location = useLocation()
   console.error(error)
