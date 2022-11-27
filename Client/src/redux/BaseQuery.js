@@ -28,8 +28,27 @@ export const staggeredBaseQuery = retry(
 
 export const baseQueryWithReAuth = async (args, api, extraOptions) => {
   await mutex.waitForUnlock()
+  let interval
   let result = await staggeredBaseQuery(args, api, extraOptions)
-  console.log('Server-response: ', result)
+  console.log('Server-response', result)
+
+  if (result.error && result.error?.status !== 'FETCH_ERROR') {
+    api.dispatch(pending(false))
+    clearInterval(interval)
+    console.log('stopInterval')
+  }
+  if (result.error?.status === 'FETCH_ERROR') {
+    clearInterval(interval)
+    api.dispatch(pending(true))
+    console.error('Net connection closed')
+    console.error('Wait few minutes! We check new response data :)')
+    interval = setInterval(async () => {
+      await staggeredBaseQuery(args, api, extraOptions)
+      // if (fetchErr.error?.status !== 'FETCH_ERROR' && fetchErr.meta.response) {
+
+      // }
+    }, 2000)
+  }
   if (result.error && result.error.status === 409) {
     api.dispatch(logout())
     api.dispatch(pending(false))

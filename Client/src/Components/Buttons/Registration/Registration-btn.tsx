@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useRegistrationMutation } from '../../../redux/Endpoints/User-endpoints'
 import { ErrorButton } from '../../Errors/Error-button/Error-btn'
-import { Preloader } from '../../Preloader/Preloader'
 import { StandardButton } from '../Standard-btn'
 import style from './Registration-btn.module.scss'
-import { useDispatch } from 'react-redux'
-import { pending } from '../../../redux/toolkit'
 
 type props = {
   email: string
@@ -19,14 +16,9 @@ export const RegistrationButton = ({
   login = '',
   password = '',
 }: props): JSX.Element => {
-  const [setBody, { isError, error, data, status }] = useRegistrationMutation()
+  const [setBody, { isError, error, data }] = useRegistrationMutation()
   const [errorStatus, setErrorStatus] = useState(false)
   const resError = isError ? JSON.stringify(error) : ''
-  const dispatch = useDispatch()
-
-  if (status === 'pending') {
-    dispatch(pending(true))
-  }
 
   const errorMessage = isError ? JSON.parse(resError).data?.message : ''
   const getMessage = (): any => {
@@ -72,7 +64,7 @@ export const RegistrationButton = ({
         <StandardButton
           onButtonClick={setBodyInterceptor}
           onButtonClickParams={{ email, login, password }}
-          preventDefaulted={false}
+          preventDefaulted={true}
           width={185}
           height={55}
           fontSize={18}
@@ -81,14 +73,11 @@ export const RegistrationButton = ({
         {isError || errorStatus ? (
           <ErrorButton errorMessage={`${getMessage()}`} />
         ) : (
-          ''
+          <></>
         )}
       </div>
     )
   } else {
     return <Navigate to="/" />
   }
-}
-{
-  /*  */
 }

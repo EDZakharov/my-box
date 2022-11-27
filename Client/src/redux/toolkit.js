@@ -44,7 +44,6 @@ const UserSlice = createSlice({
     },
     pending: (state, action) => {
       state.pending = action.payload
-      console.log('', state.pending)
     },
   },
 })
